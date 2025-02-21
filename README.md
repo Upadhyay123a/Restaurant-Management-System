@@ -120,22 +120,22 @@ The backend will start on http://localhost:8080/ 🚀
 Method	      Endpoint	             Description
 POST	     /api/users/register 	   Register a new user
 POST	     /api/users/login	       Authenticate user & return JWT token
-GET	      /api/users/{userId}	     Retrieve user profile
+GET	      /api/users/{userId}	    Retrieve user profile
 
 🔹 Food Management
 
-Method	            Endpoint     	Description
+Method	          Endpoint        	Description
 GET	          /api/food	       Get all food items
-POST	        /api/food/add  	Add a new food item (Admin only)
-PUT         	/api/food/{id}	Update food details (Admin only)
-DELETE	      /api/food/{id}	Remove a food item (Admin only)
+POST	        /api/food/add  	  Add a new food item (Admin only)
+PUT         	/api/food/{id}	   Update food details (Admin only)
+DELETE	      /api/food/{id}	   Remove a food item (Admin only)
 
 🔹 Order Management
 
 Method	     Endpoint	               Description
-POST	      /api/orders	          Place a new order
-GET	        /api/orders/{userId}	Get user order history
-PUT	        /api/orders/{orderId}	Update order status (Admin only)
+POST	      /api/orders	           Place a new order
+GET	       /api/orders/{userId}	  Get user order history
+PUT	       /api/orders/{orderId}	 Update order status (Admin only)
 
 📌 Database Schema
 
@@ -147,26 +147,26 @@ orders	      Stores orders placed by users
 Database Table Details
 🛠 Users Table
 
-Column Name	         Data Type	    Description
-id	               BIGINT (PK)	   Unique identifier
+Column Name	        Data Type	      Description
+id	               BIGINT (PK)	    Unique identifier
 username	         VARCHAR(255)	   User's name
-email	             VARCHAR(255)	   User's email
+email	            VARCHAR(255)	   User's email
 password	         VARCHAR(255)	   Hashed password
-role	             VARCHAR(50)	   Admin / Normal User / Visitor
+role	             VARCHAR(50)	    Admin / Normal User / Visitor
 
 🍔 Food Items Table
 
 Column Name          	Data Type	          Description
-id	                BIGINT (PK)	        Unique identifier
-name	              VARCHAR(255)	      Food item name
-description	        TEXT	              Food item details
+id	                 BIGINT (PK)	        Unique identifier
+name	               VARCHAR(255)	       Food item name
+description	        TEXT	               Food item details
 price	              DECIMAL(10,2)	      Food item price
 
 📦 Orders Table
 
-Column Name	         Data Type	Description
+Column Name	         Data Type	 Description
 id	               BIGINT (PK)	Unique identifier
-user_id	           BIGINT (FK)	Reference to users table
+user_id	          BIGINT (FK)	Reference to users table
 food_item_id	     BIGINT (FK)	Reference to food_items table
 status	           VARCHAR(50)	Placed / Delivered
 
