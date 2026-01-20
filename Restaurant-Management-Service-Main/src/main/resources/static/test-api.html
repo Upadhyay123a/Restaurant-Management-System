@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Restaurant Management API Test</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        h2 { color: #2F4F4F; }
+        input, select, button { margin: 5px 0; padding: 5px; }
+        .section { border: 1px solid #ccc; padding: 15px; margin-bottom: 20px; border-radius: 5px; }
+        pre { background-color: #f0f0f0; padding: 10px; border-radius: 5px; overflow-x: auto; }
+    </style>
+</head>
+<body>
+<h1>Restaurant Management API Test</h1>
+
+<script>
+    const baseUrl = "http://localhost:8080";
+    let jwtToken = ""; // store JWT after login
+
+    async function displayResult(result) {
+        document.getElementById("result").textContent = JSON.stringify(result, null, 2);
+    }
+
+    // ---------- LOGIN ----------
+    async function login() {
+        const data = {
+            userEmail: document.getElementById("loginEmail").value,
+            userPassword: document.getElementById("loginPassword").value
+        };
+        const response = await fetch(baseUrl + "/auth/login", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(data)
+        });
+
+        const result = await response.json();
+        if (result.token) {
+            jwtToken = result.token;
+            alert("Login successful! JWT token acquired.");
+        }
+        displayResult(result);
+    }
+
+    // ---------- API REQUEST ----------
+    async function apiRequest(endpoint, method = "GET", data = null) {
+        const options = {
+            method: method,
+            headers: {
+                "Authorization": "Bearer " + jwtToken,
+                "Content-Type": "application/json"
+            }
+        };
+        if (data) options.body = JSON.stringify(data);
+        const response = await fetch(baseUrl + endpoint, options);
+        return response.json().catch(() => "Success");
+    }
+
+    // ---------- USERS ----------
+    async function addUser() {
+        const data = {
+            userName: document.getElementById("userName").value,
+            userEmail: document.getElementById("userEmail").value,
+            userPassword: document.getElementById("userPassword").value
+        };
+        displayResult(await apiRequest("/api/users/signup", "POST", data));
+    }
+
+    async function getUsers() {
+        displayResult(await apiRequest("/api/users/all"));
+    }
+
+    // ---------- FOOD ----------
+    async function addFood() {
+        const data = {
+            foodTitle: document.getElementById("foodName").value,
+            foodType: document.getElementById("foodType").value,
+            foodPrice: parseFloat(document.getElementById("foodPrice").value)
+        };
+        displayResult(await apiRequest("/api/fooditems/create", "POST", data));
+    }
+
+    async function getFood() {
+        displayResult(await apiRequest("/api/fooditems/all"));
+    }
+
+    // ---------- ORDERS ----------
+    async function addOrder() {
+        const data = {
+            orderQuantity: parseInt(document.getElementById("orderQuantity").value),
+            orderStatus: document.getElementById("orderStatus").value,
+            customer: { userId: parseInt(document.getElementById("orderUserId").value) },
+            food: { foodId: parseInt(document.getElementById("orderFoodId").value) }
+        };
+        displayResult(await apiRequest("/api/orders/create", "POST", data));
+    }
+
+    async function getOrders() {
+        displayResult(await apiRequest("/api/orders/all"));
+    }
+
+    // ---------- VISITORS ----------
+    async function addVisitor() {
+        const data = {
+            visitorName: document.getElementById("visitorName").value,
+            visitorEmail: document.getElementById("visitorEmail").value
+        };
+        displayResult(await apiRequest("/api/visitors/signup", "POST", data));
+    }
+
+    async function getVisitors() {
+        displayResult(await apiRequest("/api/visitors/all"));
+    }
+</script>
+
+<!-- LOGIN SECTION -->
+<div class="section">
+    <h2>Login</h2>
+    <input type="email" id="loginEmail" placeholder="Email">
+    <input type="password" id="loginPassword" placeholder="Password">
+    <br>
+    <button onclick="login()">Login & Get JWT</button>
+</div>
+
+<!-- USERS SECTION -->
+<div class="section">
+    <h2>Users</h2>
+    <input type="text" id="userName" placeholder="User Name">
+    <input type="email" id="userEmail" placeholder="User Email">
+    <input type="password" id="userPassword" placeholder="Password">
+    <br>
+    <button onclick="addUser()">Add User</button>
+    <button onclick="getUsers()">Get All Users</button>
+</div>
+
+<!-- FOOD SECTION -->
+<div class="section">
+    <h2>Food Items</h2>
+    <input type="text" id="foodName" placeholder="Food Title">
+    <select id="foodType">
+        <option value="APPETIZER">APPETIZER</option>
+        <option value="MAIN_COURSE">MAIN_COURSE</option>
+        <option value="DESSERT">DESSERT</option>
+        <option value="BEVERAGE">BEVERAGE</option>
+    </select>
+    <input type="number" id="foodPrice" placeholder="Price">
+    <br>
+    <button onclick="addFood()">Add Food</button>
+    <button onclick="getFood()">Get All Food</button>
+</div>
+
+<!-- ORDERS SECTION -->
+<div class="section">
+    <h2>Orders</h2>
+    <input type="number" id="orderUserId" placeholder="User ID">
+    <input type="number" id="orderFoodId" placeholder="Food ID">
+    <input type="number" id="orderQuantity" placeholder="Quantity">
+    <select id="orderStatus">
+        <option value="CREATED">CREATED</option>
+        <option value="DISPATCHED">DISPATCHED</option>
+        <option value="DELIVERED">DELIVERED</option>
+    </select>
+    <br>
+    <button onclick="addOrder()">Add Order</button>
+    <button onclick="getOrders()">Get All Orders</button>
+</div>
+
+<!-- VISITORS SECTION -->
+<div class="section">
+    <h2>Visitors</h2>
+    <input type="text" id="visitorName" placeholder="Visitor Name">
+    <input type="email" id="visitorEmail" placeholder="Visitor Email">
+    <br>
+    <button onclick="addVisitor()">Add Visitor</button>
+    <button onclick="getVisitors()">Get All Visitors</button>
+</div>
+
+<h2>API Response:</h2>
+<pre id="result">Results will appear here...</pre>
+
+</body>
+</html>
