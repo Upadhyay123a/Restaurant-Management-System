@@ -1,12 +1,22 @@
 package com.geekster.project.RestaurantManagementServiceAPI.DTO;
 
 public class SignUpOutput {
-
-    private String status;
     private String message;
+    private String status;
 
-    public SignUpOutput(String status, String message) {
+    public SignUpOutput() {
+    }
+
+    public SignUpOutput(String message, String status) {
+        this.message = message;
         this.status = status;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
         this.message = message;
     }
 
@@ -14,7 +24,7 @@ public class SignUpOutput {
         return status;
     }
 
-    public String getMessage() {
-        return message;
+    public void setStatus(String status) {
+        this.status = status;
     }
 }

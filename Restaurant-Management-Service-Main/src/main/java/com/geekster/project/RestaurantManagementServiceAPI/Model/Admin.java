@@ -1,8 +1,9 @@
 package com.geekster.project.RestaurantManagementServiceAPI.Model;
 
-import jakarta.persistence.*;
-import jakarta.validation.constraints.Pattern;
-import java.time.LocalDateTime;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 
 @Entity
 public class Admin {
@@ -12,11 +13,8 @@ public class Admin {
     private Integer adminId;
 
     private String adminName;
-
-    @Pattern(regexp = "^.+@admin\\.com$")
     private String adminEmail;
-
-    private LocalDateTime createdAt;
+    private String adminPassword;
 
     public Integer getAdminId() {
         return adminId;
@@ -42,11 +40,11 @@ public class Admin {
         this.adminEmail = adminEmail;
     }
 
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
+    public String getAdminPassword() {
+        return adminPassword;
     }
 
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
+    public void setAdminPassword(String adminPassword) {
+        this.adminPassword = adminPassword;
     }
 }

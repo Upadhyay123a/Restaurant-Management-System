@@ -1,0 +1,103 @@
+package com.geekster.project.RestaurantManagementServiceAPI.Service;
+
+import com.geekster.project.RestaurantManagementServiceAPI.Enums.OrderStatus;
+import com.geekster.project.RestaurantManagementServiceAPI.Model.Food;
+import com.geekster.project.RestaurantManagementServiceAPI.Model.Order;
+import com.geekster.project.RestaurantManagementServiceAPI.Model.User;
+import com.geekster.project.RestaurantManagementServiceAPI.Model.Visitor;
+import com.geekster.project.RestaurantManagementServiceAPI.Repository.IFoodRepo;
+import com.geekster.project.RestaurantManagementServiceAPI.Repository.IOrderRepo;
+import com.geekster.project.RestaurantManagementServiceAPI.Repository.IUserRepo;
+import com.geekster.project.RestaurantManagementServiceAPI.Repository.IVisitorRepo;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Optional;
+
+@Service
+public class RestaurantBusinessService {
+
+    @Autowired
+    private IFoodRepo foodRepo;
+
+    @Autowired
+    private IOrderRepo orderRepo;
+
+    @Autowired
+    private IUserRepo userRepo;
+
+    @Autowired
+    private IVisitorRepo visitorRepo;
+
+    public boolean isFoodAvailable(Integer foodId) {
+        Optional<Food> food = foodRepo.findById(foodId);
+        return food.isPresent() && food.get().isAvailable();
+    }
+
+    public List<Food> getAvailableFoodItems() {
+        return foodRepo.findByAvailable(true);
+    }
+
+    public boolean canUserPlaceOrder(Integer userId, double orderAmount) {
+        Optional<User> user = userRepo.findById(userId);
+        if (user.isEmpty()) return false;
+        
+        User userObj = user.get();
+        return userObj.isEmailVerified() && !userObj.isAccountLocked();
+    }
+
+    public Order createOrder(Integer userId, Integer foodId, Integer quantity) {
+        User user = userRepo.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        if (!canUserPlaceOrder(userId, 0)) {
+            throw new RuntimeException("User cannot place order - account not verified or locked");
+        }
+
+        Food food = foodRepo.findById(foodId)
+                .orElseThrow(() -> new RuntimeException("Food item not found: " + foodId));
+        
+        if (!isFoodAvailable(foodId)) {
+            throw new RuntimeException("Food item not available: " + food.getFoodTitle());
+        }
+
+        Order order = new Order();
+        order.setCustomer(user);
+        order.setFood(food);
+        order.setOrderQuantity(quantity);
+        order.setOrderStatus(OrderStatus.PENDING);
+        order.setCreatedAt(LocalDateTime.now());
+        
+        return orderRepo.save(order);
+    }
+
+    public Visitor recordVisitorVisit(String visitorEmail, String visitorType) {
+        Visitor visitor = new Visitor();
+        visitor.setVisitorEmail(visitorEmail);
+        visitor.setVisitorType(visitorType);
+        visitor.setVisitorName("Guest");
+        visitor.setCreatedAt(LocalDateTime.now());
+        
+        return visitorRepo.save(visitor);
+    }
+
+    public double calculateDailyRevenue(LocalDateTime date) {
+        LocalDateTime startOfDay = date.toLocalDate().atStartOfDay();
+        LocalDateTime endOfDay = date.toLocalDate().atTime(23, 59, 59);
+        
+        List<Order> dailyOrders = orderRepo.findByOrderDateBetween(startOfDay, endOfDay);
+        return dailyOrders.stream()
+                .filter(order -> OrderStatus.DELIVERED.equals(order.getOrderStatus()))
+                .mapToDouble(order -> order.getFood().getFoodPrice() * order.getOrderQuantity())
+                .sum();
+    }
+
+    public long getTodayVisitorCount() {
+        LocalDateTime startOfDay = LocalDateTime.now().toLocalDate().atStartOfDay();
+        LocalDateTime endOfDay = LocalDateTime.now().toLocalDate().atTime(23, 59, 59);
+        
+        return visitorRepo.countByCreatedAtBetween(startOfDay, endOfDay);
+    }
+}

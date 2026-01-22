@@ -1,5 +1,10 @@
 package com.geekster.project.RestaurantManagementServiceAPI.Controller;
 
+/*
+ * Handles all food management operations for the restaurant
+ * Including creating food items, updating menu items, and retrieving food inventory
+ */
+
 import com.geekster.project.RestaurantManagementServiceAPI.Model.Food;
 import com.geekster.project.RestaurantManagementServiceAPI.Service.FoodService;
 import jakarta.validation.Valid;
@@ -17,14 +22,14 @@ public class FoodController {
     @Autowired
     private FoodService foodService;
 
-    @PostMapping("/create")
+    /* Add new food item to the restaurant menu */
     public ResponseEntity<String> createFoodItem(@Valid @RequestBody Food foodItem) {
         foodService.createFood(foodItem);
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body("Food item created successfully");
     }
 
-    @GetMapping("/all")
+    /* Get all food items from the menu */
     public ResponseEntity<List<Food>> getAllFoodItems() {
         return ResponseEntity.ok(foodService.getAllFoodItems());
     }

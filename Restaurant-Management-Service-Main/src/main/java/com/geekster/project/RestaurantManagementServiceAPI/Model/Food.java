@@ -19,6 +19,7 @@ public class Food {
 
     private String foodImg;
     private Double foodPrice;
+    private boolean available = true;
     private LocalDateTime createdAt;
 
     public Integer getFoodId() {
@@ -67,6 +68,14 @@ public class Food {
 
     public void setFoodPrice(Double foodPrice) {
         this.foodPrice = foodPrice;
+    }
+
+    public boolean isAvailable() {
+        return available;
+    }
+
+    public void setAvailable(boolean available) {
+        this.available = available;
     }
 
     public LocalDateTime getCreatedAt() {

@@ -1,9 +1,50 @@
-# Restaurant Management System
+# 🍽 Restaurant Management System
 
 ![Java](https://img.shields.io/badge/Java-21-darkblue.svg)
-![Maven](https://img.shields.io/badge/Maven-4.0-brightgreen.svg)
 ![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.1.4-brightgreen.svg)
+![Maven](https://img.shields.io/badge/Maven-4.0-brightgreen.svg)
 ![License](https://img.shields.io/badge/License-BSD_3--Clause-blue.svg)
+
+## � Overview
+
+A comprehensive **Restaurant Management System** built with Spring Boot that provides complete business operations for restaurant management. This system handles user authentication, food menu management, visitor tracking, and order processing with professional security and modern architecture.
+
+## 🎯 Key Features
+
+### 🔐 **Authentication & Security**
+- **JWT-based Authentication** with secure token generation
+- **Email Verification** for new user registration
+- **Password Reset** with OTP functionality
+- **Account Lockout** after failed login attempts
+- **Role-based Access Control** (Admin/User/Visitor)
+- **BCrypt Password Encryption** for secure storage
+
+### 👥 **User Management**
+- **User Registration** with email verification
+- **Profile Management** with secure updates
+- **Account Security** with failed attempt tracking
+- **Password Policies** with strength validation
+
+### 🍕 **Food Management**
+- **Menu Item Creation** with categorization
+- **Food Inventory** tracking with availability status
+- **Price Management** with decimal support
+- **Food Categories** (Appetizer, Main Course, Dessert, Beverage)
+- **Real-time Updates** for menu changes
+
+### 📊 **Order Management**
+- **Order Placement** with food item selection
+- **Order Status Tracking** (Created, Preparing, Ready, Delivered)
+- **Order History** with filtering capabilities
+- **Revenue Calculation** with order totals
+- **Customer Order Management** with user association
+
+### 🏪 **Visitor Management**
+- **Guest Registration** with visitor categorization
+- **Visitor Tracking** with timestamp logging
+- **Visit History** with analytics support
+- **Guest Type Management** (VIP, Regular, Delivery, Staff)
+- **Check-in System** with real-time monitoring
 
 ---
 
@@ -11,20 +52,6 @@
 
 **Atul Kumar Upadhyay**  
 📧 Email: atulupa12345@gmail.com
-
----
-
-## Overview
-
-The **Restaurant Management System** is a Spring Boot-based application providing CRUD operations for:
-
-- Users (Admin, Normal User, Visitor)
-- Food Items
-- Orders
-
-It supports **role-based access control** and **JWT-based authentication**, ensuring secure access to endpoints. Visitors can view the menu without signing in.
-
-Future implementation includes **email verification** for signup.
 
 ---
 
@@ -170,7 +197,6 @@ spring.datasource.driverClassName=com.mysql.cj.jdbc.Driver
 spring.jpa.hibernate.ddl-auto=update
 spring.jpa.database-platform=org.hibernate.dialect.MySQL8Dialect
 spring.jpa.properties.hibernate.show_sql=true
-spring.jpa.properties.hibernate.format_sql=true
 ```
 
 ---

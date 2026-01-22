@@ -1,6 +1,5 @@
 package com.geekster.project.RestaurantManagementServiceAPI.Model;
 
-import com.geekster.project.RestaurantManagementServiceAPI.Enums.OrderStatus;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
@@ -13,9 +12,7 @@ public class Order {
     private Integer orderId;
 
     private Integer orderQuantity;
-
-    @Enumerated(EnumType.STRING)
-    private OrderStatus orderStatus;
+    private String orderStatus;
 
     private LocalDateTime createdAt;
 
@@ -43,11 +40,11 @@ public class Order {
         this.orderQuantity = orderQuantity;
     }
 
-    public OrderStatus getOrderStatus() {
+    public String getOrderStatus() {
         return orderStatus;
     }
 
-    public void setOrderStatus(OrderStatus orderStatus) {
+    public void setOrderStatus(String orderStatus) {
         this.orderStatus = orderStatus;
     }
 

@@ -1,44 +1,41 @@
 package com.geekster.project.RestaurantManagementServiceAPI.Model;
 
-import jakarta.persistence.*;
-import java.time.LocalDateTime;
-import java.util.UUID;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 
 @Entity
 public class AuthenticationToken {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long tokenId;
+    private Integer tokenId;
 
-    private String tokenValue;
-    private LocalDateTime tokenCreationDateTime;
+    private String token;
+    private Integer userId;
 
-    @OneToOne
-    @JoinColumn(name = "fk_user_Id")
-    private User user;
-
-    public AuthenticationToken() {}
-
-    public AuthenticationToken(User user) {
-        this.user = user;
-        this.tokenValue = UUID.randomUUID().toString();
-        this.tokenCreationDateTime = LocalDateTime.now();
-    }
-
-    public Long getTokenId() {
+    public Integer getTokenId() {
         return tokenId;
     }
 
-    public String getTokenValue() {
-        return tokenValue;
+    public void setTokenId(Integer tokenId) {
+        this.tokenId = tokenId;
     }
 
-    public LocalDateTime getTokenCreationDateTime() {
-        return tokenCreationDateTime;
+    public String getToken() {
+        return token;
     }
 
-    public User getUser() {
-        return user;
+    public void setToken(String token) {
+        this.token = token;
+    }
+
+    public Integer getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Integer userId) {
+        this.userId = userId;
     }
 }

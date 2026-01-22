@@ -1,8 +1,8 @@
 package com.geekster.project.RestaurantManagementServiceAPI.DTO;
 
-public class SignInInput {
+public class OTPVerificationRequest {
     private String userEmail;
-    private String userPassword;
+    private String otp;
 
     public String getUserEmail() {
         return userEmail;
@@ -12,11 +12,11 @@ public class SignInInput {
         this.userEmail = userEmail;
     }
 
-    public String getUserPassword() {
-        return userPassword;
+    public String getOtp() {
+        return otp;
     }
 
-    public void setUserPassword(String userPassword) {
-        this.userPassword = userPassword;
+    public void setOtp(String otp) {
+        this.otp = otp;
     }
 }

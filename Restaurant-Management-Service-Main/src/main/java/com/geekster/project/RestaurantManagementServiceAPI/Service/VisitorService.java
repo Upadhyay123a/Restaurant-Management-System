@@ -16,17 +16,20 @@ public class VisitorService {
     @Autowired
     private IVisitorRepo visitorRepo;
 
+    // Register new visitor in the system
     public SignUpOutput signUpVisitor(Visitor visitor) {
         visitor.setCreatedAt(LocalDateTime.now());
         visitorRepo.save(visitor);
         return new SignUpOutput("success", "Visitor registered successfully");
     }
 
+    // Get all visitors from database
     public List<Visitor> getAllVisitors() {
         return visitorRepo.findAll();
     }
 
     public Visitor getVisitorById(Integer visitorId) {
+        // Find specific visitor by ID
         return visitorRepo.findById(visitorId)
                 .orElseThrow(() ->
                         new EntityNotFoundException("Visitor not found with ID: " + visitorId));

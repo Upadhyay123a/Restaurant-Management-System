@@ -1,0 +1,660 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Restaurant Management System - Professional Dashboard</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding-bottom: 20px;
+            border-bottom: 3px solid #667eea;
+        }
+
+        .header h1 {
+            color: #2c3e50;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            color: #7f8c8d;
+            font-size: 1.1em;
+        }
+
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+            border-left: 5px solid #667eea;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+        }
+
+        .card h3 {
+            color: #2c3e50;
+            margin-bottom: 20px;
+            font-size: 1.4em;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .icon {
+            width: 30px;
+            height: 30px;
+            background: #667eea;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            color: #555;
+            font-weight: 600;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e1e8e8;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .btn {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            margin-right: 10px;
+            margin-bottom: 10px;
+        }
+
+        .btn:hover {
+            background: #5a6fd8;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .btn-success {
+            background: #27ae60;
+        }
+
+        .btn-success:hover {
+            background: #229954;
+        }
+
+        .btn-warning {
+            background: #f39c12;
+        }
+
+        .btn-warning:hover {
+            background: #e67e22;
+        }
+
+        .btn-danger {
+            background: #e74c3c;
+        }
+
+        .btn-danger:hover {
+            background: #c0392b;
+        }
+
+        .status {
+            padding: 10px 15px;
+            border-radius: 8px;
+            margin-top: 15px;
+            font-weight: 600;
+        }
+
+        .status-success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .status-error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .response-area {
+            background: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 8px;
+            padding: 20px;
+            margin-top: 20px;
+            font-family: 'Courier New', monospace;
+            font-size: 13px;
+            max-height: 300px;
+            overflow-y: auto;
+            white-space: pre-wrap;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .stat-item {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+            border-left: 4px solid #28a745;
+        }
+
+        .stat-value {
+            font-size: 2em;
+            font-weight: bold;
+            color: #28a745;
+        }
+
+        .stat-label {
+            color: #6c757d;
+            font-size: 0.9em;
+            margin-top: 5px;
+        }
+
+        .two-column {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        @media (max-width: 768px) {
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .two-column {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🍽 Restaurant Management System</h1>
+            <p>Professional Restaurant Operations Dashboard - Real-time Business Management</p>
+        </div>
+
+        <div class="dashboard-grid">
+            <!-- User Management Section -->
+            <div class="card">
+                <h3>
+                    <div class="icon">👥</div>
+                    User Management
+                </h3>
+                <div class="form-group">
+                    <label>User Name</label>
+                    <input type="text" id="userName" placeholder="Enter user name">
+                </div>
+                <div class="form-group">
+                    <label>Email Address</label>
+                    <input type="email" id="userEmail" placeholder="user@restaurant.com">
+                </div>
+                <div class="form-group">
+                    <label>Password</label>
+                    <input type="password" id="userPassword" placeholder="Min 8 chars, uppercase, lowercase, digit, special">
+                </div>
+                <div class="two-column">
+                    <button class="btn btn-success" onclick="registerUser()">Register User</button>
+                    <button class="btn" onclick="getAllUsers()">Get All Users</button>
+                </div>
+                <div id="userStatus" class="status"></div>
+            </div>
+
+            <!-- Food Management Section -->
+            <div class="card">
+                <h3>
+                    <div class="icon">🍕</div>
+                    Food Management
+                </h3>
+                <div class="form-group">
+                    <label>Food Title</label>
+                    <input type="text" id="foodTitle" placeholder="e.g., Margherita Pizza">
+                </div>
+                <div class="form-group">
+                    <label>Description</label>
+                    <textarea id="foodDesc" rows="3" placeholder="Describe the food item..."></textarea>
+                </div>
+                <div class="two-column">
+                    <div class="form-group">
+                        <label>Category</label>
+                        <select id="foodType">
+                            <option value="APPETIZER">🥗 Appetizer</option>
+                            <option value="MAIN_COURSE">🍝 Main Course</option>
+                            <option value="DESSERT">🍰 Dessert</option>
+                            <option value="BEVERAGE">🥤 Beverage</option>
+                            <option value="SNACK">🍿 Snack</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Price ($)</label>
+                        <input type="number" id="foodPrice" step="0.01" placeholder="12.99">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>
+                        <input type="checkbox" id="foodAvailable" checked> Available
+                    </label>
+                </div>
+                <div class="two-column">
+                    <button class="btn btn-success" onclick="addFoodItem()">Add Food</button>
+                    <button class="btn" onclick="getAllFoodItems()">Get Menu</button>
+                </div>
+                <div id="foodStatus" class="status"></div>
+            </div>
+
+            <!-- Visitor Management Section -->
+            <div class="card">
+                <h3>
+                    <div class="icon">👥</div>
+                    Visitor Management
+                </h3>
+                <div class="form-group">
+                    <label>Visitor Name</label>
+                    <input type="text" id="visitorName" placeholder="Enter visitor name">
+                </div>
+                <div class="form-group">
+                    <label>Email Address</label>
+                    <input type="email" id="visitorEmail" placeholder="visitor@example.com">
+                </div>
+                <div class="form-group">
+                    <label>Visitor Type</label>
+                    <select id="visitorType">
+                        <option value="VIP">⭐ VIP Guest</option>
+                        <option value="REGULAR">👥 Regular Guest</option>
+                        <option value="DELIVERY">🚚 Delivery Personnel</option>
+                        <option value="STAFF">👨‍🍳 Staff Member</option>
+                    </select>
+                </div>
+                <div class="two-column">
+                    <button class="btn btn-success" onclick="registerVisitor()">Check-in Visitor</button>
+                    <button class="btn" onclick="getAllVisitors()">Visitor Log</button>
+                </div>
+                <div id="visitorStatus" class="status"></div>
+            </div>
+
+            <!-- Authentication Section -->
+            <div class="card">
+                <h3>
+                    <div class="icon">🔐</div>
+                    Authentication
+                </h3>
+                <div class="form-group">
+                    <label>Email</label>
+                    <input type="email" id="loginEmail" placeholder="user@restaurant.com">
+                </div>
+                <div class="form-group">
+                    <label>Password</label>
+                    <input type="password" id="loginPassword" placeholder="Enter password">
+                </div>
+                <div class="two-column">
+                    <button class="btn btn-success" onclick="login()">Login</button>
+                    <button class="btn btn-warning" onclick="forgotPassword()">Reset Password</button>
+                </div>
+                <div class="form-group">
+                    <label>Verification Token</label>
+                    <input type="text" id="verificationToken" placeholder="Enter email verification token">
+                    <button class="btn" onclick="verifyEmail()">Verify Email</button>
+                </div>
+                <div id="authStatus" class="status"></div>
+            </div>
+        </div>
+
+        <!-- Analytics Dashboard -->
+        <div class="card">
+            <h3>
+                <div class="icon">📊</div>
+                Business Analytics
+            </h3>
+            <div class="stats">
+                <div class="stat-item">
+                    <div class="stat-value" id="todayRevenue">$0</div>
+                    <div class="stat-label">Today's Revenue</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value" id="todayVisitors">0</div>
+                    <div class="stat-label">Today's Visitors</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value" id="availableItems">0</div>
+                    <div class="stat-label">Available Items</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value" id="totalUsers">0</div>
+                    <div class="stat-label">Total Users</div>
+                </div>
+            </div>
+            <div class="two-column">
+                <button class="btn" onclick="loadAnalytics()">🔄 Refresh Analytics</button>
+                <button class="btn btn-warning" onclick="testEmail()">📧 Test Email</button>
+            </div>
+        </div>
+
+        <!-- API Response Area -->
+        <div class="card">
+            <h3>
+                <div class="icon">💻</div>
+                API Response
+            </h3>
+            <div id="apiResponse" class="response-area">
+                Welcome to Restaurant Management System Dashboard! 🍽
+                
+                Use the forms above to test all business logic operations:
+                
+                👥 User Management: Register users, manage accounts
+                🍕 Food Management: Add menu items, manage inventory  
+                👥 Visitor Tracking: Check-in guests, track visits
+                🔐 Authentication: Login, password reset, email verification
+                📊 Analytics: Real-time business insights
+                
+                All operations are connected to the live backend API!
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const API_BASE = 'http://localhost:8081';
+        let jwtToken = localStorage.getItem('jwtToken') || '';
+
+        // Utility Functions
+        function showStatus(elementId, message, isSuccess = true) {
+            const element = document.getElementById(elementId);
+            element.textContent = message;
+            element.className = `status ${isSuccess ? 'status-success' : 'status-error'}`;
+            
+            setTimeout(() => {
+                element.textContent = '';
+                element.className = 'status';
+            }, 5000);
+        }
+
+        function showResponse(data) {
+            const responseArea = document.getElementById('apiResponse');
+            responseArea.textContent = JSON.stringify(data, null, 2);
+        }
+
+        function updateAuthHeaders() {
+            return {
+                'Content-Type': 'application/json',
+                'Authorization': jwtToken ? `Bearer ${jwtToken}` : ''
+            };
+        }
+
+        async function apiCall(endpoint, method = 'GET', data = null) {
+            try {
+                const options = {
+                    method: method,
+                    headers: updateAuthHeaders()
+                };
+                
+                if (data) {
+                    options.body = JSON.stringify(data);
+                }
+
+                const response = await fetch(`${API_BASE}${endpoint}`, options);
+                const result = await response.json();
+                
+                showResponse(result);
+                return result;
+            } catch (error) {
+                showResponse({ error: error.message });
+            }
+        }
+
+        // User Management Functions
+        async function registerUser() {
+            const userData = {
+                userName: document.getElementById('userName').value,
+                userEmail: document.getElementById('userEmail').value,
+                userPassword: document.getElementById('userPassword').value
+            };
+
+            if (!userData.userName || !userData.userEmail || !userData.userPassword) {
+                showStatus('userStatus', '⚠️ Please fill all user fields', false);
+                return;
+            }
+
+            const result = await apiCall('/api/users/signup', 'POST', userData);
+            
+            if (result.message || result.status === 201) {
+                showStatus('userStatus', '✅ User registered successfully! Check email for verification.', true);
+                document.getElementById('userName').value = '';
+                document.getElementById('userEmail').value = '';
+                document.getElementById('userPassword').value = '';
+            } else {
+                showStatus('userStatus', `❌ ${result.error || 'Registration failed'}`, false);
+            }
+        }
+
+        async function getAllUsers() {
+            const result = await apiCall('/api/users/all');
+            showStatus('userStatus', `📋 Retrieved ${Array.isArray(result) ? result.length : 1} users`, true);
+        }
+
+        // Food Management Functions
+        async function addFoodItem() {
+            const foodData = {
+                foodTitle: document.getElementById('foodTitle').value,
+                foodDesc: document.getElementById('foodDesc').value,
+                foodType: document.getElementById('foodType').value,
+                foodPrice: parseFloat(document.getElementById('foodPrice').value),
+                available: document.getElementById('foodAvailable').checked
+            };
+
+            if (!foodData.foodTitle || !foodData.foodPrice) {
+                showStatus('foodStatus', '⚠️ Please fill food title and price', false);
+                return;
+            }
+
+            const result = await apiCall('/api/fooditems/create', 'POST', foodData);
+            
+            if (result.message || result.status === 201) {
+                showStatus('foodStatus', '✅ Food item added successfully!', true);
+                document.getElementById('foodTitle').value = '';
+                document.getElementById('foodDesc').value = '';
+                document.getElementById('foodPrice').value = '';
+            } else {
+                showStatus('foodStatus', `❌ ${result.error || 'Failed to add food item'}`, false);
+            }
+        }
+
+        async function getAllFoodItems() {
+            const result = await apiCall('/api/fooditems/all');
+            showStatus('foodStatus', `🍽 Menu loaded: ${Array.isArray(result) ? result.length : 1} items`, true);
+        }
+
+        // Visitor Management Functions
+        async function registerVisitor() {
+            const visitorData = {
+                visitorName: document.getElementById('visitorName').value,
+                visitorEmail: document.getElementById('visitorEmail').value,
+                visitorType: document.getElementById('visitorType').value
+            };
+
+            if (!visitorData.visitorName || !visitorData.visitorEmail) {
+                showStatus('visitorStatus', '⚠️ Please fill visitor name and email', false);
+                return;
+            }
+
+            const result = await apiCall('/api/visitors/signup', 'POST', visitorData);
+            
+            if (result.message || result.status === 201) {
+                showStatus('visitorStatus', '✅ Visitor checked-in successfully!', true);
+                document.getElementById('visitorName').value = '';
+                document.getElementById('visitorEmail').value = '';
+            } else {
+                showStatus('visitorStatus', `❌ ${result.error || 'Failed to check-in visitor'}`, false);
+            }
+        }
+
+        async function getAllVisitors() {
+            const result = await apiCall('/api/visitors/all');
+            showStatus('visitorStatus', `👥 Visitor log: ${Array.isArray(result) ? result.length : 1} visitors`, true);
+        }
+
+        // Authentication Functions
+        async function login() {
+            const loginData = {
+                userEmail: document.getElementById('loginEmail').value,
+                userPassword: document.getElementById('loginPassword').value
+            };
+
+            if (!loginData.userEmail || !loginData.userPassword) {
+                showStatus('authStatus', '⚠️ Please enter email and password', false);
+                return;
+            }
+
+            const result = await apiCall('/auth/login', 'POST', loginData);
+            
+            if (result.token) {
+                jwtToken = result.token;
+                localStorage.setItem('jwtToken', jwtToken);
+                showStatus('authStatus', '✅ Login successful! JWT token acquired.', true);
+                document.getElementById('loginEmail').value = '';
+                document.getElementById('loginPassword').value = '';
+                loadAnalytics(); // Refresh analytics after login
+            } else {
+                showStatus('authStatus', `❌ ${result.error || 'Login failed'}`, false);
+            }
+        }
+
+        async function forgotPassword() {
+            const email = document.getElementById('loginEmail').value;
+            
+            if (!email) {
+                showStatus('authStatus', '⚠️ Please enter email for password reset', false);
+                return;
+            }
+
+            const result = await apiCall('/auth/forgot-password', 'POST', { userEmail: email });
+            
+            if (result.message || result.status === 200) {
+                showStatus('authStatus', '✅ Password reset email sent!', true);
+            } else {
+                showStatus('authStatus', `❌ ${result.error || 'Failed to send reset email'}`, false);
+            }
+        }
+
+        async function verifyEmail() {
+            const token = document.getElementById('verificationToken').value;
+            
+            if (!token) {
+                showStatus('authStatus', '⚠️ Please enter verification token', false);
+                return;
+            }
+
+            const result = await apiCall(`/auth/verify?token=${token}`, 'GET');
+            
+            if (result.message) {
+                showStatus('authStatus', '✅ Email verified successfully!', true);
+                document.getElementById('verificationToken').value = '';
+            } else {
+                showStatus('authStatus', `❌ ${result.error || 'Verification failed'}`, false);
+            }
+        }
+
+        // Analytics Functions
+        async function loadAnalytics() {
+            try {
+                const dashboardResult = await apiCall('/api/analytics/dashboard');
+                
+                if (dashboardResult.todayRevenue !== undefined) {
+                    document.getElementById('todayRevenue').textContent = `$${dashboardResult.todayRevenue.toFixed(2)}`;
+                    document.getElementById('todayVisitors').textContent = dashboardResult.todayVisitors;
+                    document.getElementById('availableItems').textContent = dashboardResult.availableFoodItems;
+                }
+                
+                const usersResult = await apiCall('/api/users/all');
+                document.getElementById('totalUsers').textContent = Array.isArray(usersResult) ? usersResult.length : 0;
+                
+            } catch (error) {
+                console.error('Analytics loading failed:', error);
+            }
+        }
+
+        async function testEmail() {
+            try {
+                const result = await apiCall('/email/test', 'GET');
+                showStatus('authStatus', result.includes('successful') ? '✅ Email test successful!' : '❌ Email test failed', result.includes('successful'));
+            } catch (error) {
+                showStatus('authStatus', '❌ Email test failed', false);
+            }
+        }
+
+        // Initialize dashboard on load
+        window.addEventListener('load', () => {
+            loadAnalytics();
+            showResponse('🍽 Restaurant Management System Dashboard loaded successfully!\n\nAll business operations are ready for testing.');
+        });
+    </script>
+</body>
+</html>

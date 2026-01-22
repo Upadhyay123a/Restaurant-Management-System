@@ -4,5 +4,6 @@ public enum FoodType {
     APPETIZER,
     MAIN_COURSE,
     DESSERT,
-    BEVERAGE
+    BEVERAGE,
+    SNACK
 }

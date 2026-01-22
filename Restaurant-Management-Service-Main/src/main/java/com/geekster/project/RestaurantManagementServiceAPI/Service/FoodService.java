@@ -13,7 +13,7 @@ public class FoodService {
     private IFoodRepo foodRepo;
 
     public Food createFood(Food food) {
-        // Implement food creation logic
+        // Add new food item to the menu
         return foodRepo.save(food);
     }
 
@@ -21,11 +21,11 @@ public class FoodService {
         Food existingFood = foodRepo.findById(foodId)
                 .orElseThrow(() -> new EntityNotFoundException("Food not found"));
 
-        // Update food fields based on your requirements
+        // Update food information in the database
         existingFood.setFoodTitle(updatedFood.getFoodTitle());
         existingFood.setFoodDesc(updatedFood.getFoodDesc());
         existingFood.setFoodType(updatedFood.getFoodType());
-        // Update other fields as needed
+        // Update food details with new information
 
         return foodRepo.save(existingFood);
     }

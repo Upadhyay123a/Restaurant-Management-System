@@ -1,0 +1,65 @@
+package com.geekster.project.RestaurantManagementServiceAPI.Controller;
+
+import com.geekster.project.RestaurantManagementServiceAPI.Service.RestaurantBusinessService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.time.LocalDateTime;
+import java.util.HashMap;
+import java.util.Map;
+
+@RestController
+@RequestMapping("/api/analytics")
+public class RestaurantAnalyticsController {
+
+    @Autowired
+    private RestaurantBusinessService businessService;
+
+    @GetMapping("/dashboard")
+    public ResponseEntity<Map<String, Object>> getDashboardStats() {
+        Map<String, Object> stats = new HashMap<>();
+        
+        stats.put("todayRevenue", businessService.calculateDailyRevenue(LocalDateTime.now()));
+        stats.put("todayVisitors", businessService.getTodayVisitorCount());
+        stats.put("availableFoodItems", businessService.getAvailableFoodItems().size());
+        
+        return ResponseEntity.ok(stats);
+    }
+
+    @GetMapping("/revenue/{date}")
+    public ResponseEntity<Map<String, Object>> getDailyRevenue(@PathVariable String date) {
+        try {
+            LocalDateTime targetDate = LocalDateTime.parse(date + "T00:00:00");
+            double revenue = businessService.calculateDailyRevenue(targetDate);
+            
+            Map<String, Object> response = new HashMap<>();
+            response.put("date", date);
+            response.put("revenue", revenue);
+            
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(Map.of("error", "Invalid date format. Use YYYY-MM-DD"));
+        }
+    }
+
+    @GetMapping("/visitors/today")
+    public ResponseEntity<Map<String, Object>> getTodayVisitors() {
+        long visitorCount = businessService.getTodayVisitorCount();
+        
+        Map<String, Object> response = new HashMap<>();
+        response.put("date", LocalDateTime.now().toLocalDate().toString());
+        response.put("visitorCount", visitorCount);
+        
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/food/available")
+    public ResponseEntity<Map<String, Object>> getAvailableFood() {
+        Map<String, Object> response = new HashMap<>();
+        response.put("availableItems", businessService.getAvailableFoodItems());
+        response.put("count", businessService.getAvailableFoodItems().size());
+        
+        return ResponseEntity.ok(response);
+    }
+}
