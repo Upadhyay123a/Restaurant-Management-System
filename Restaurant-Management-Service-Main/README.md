@@ -289,9 +289,9 @@ For questions or feedback, contact:
 
 ## Contributing
 
-Contributions are welcome! Please read [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md) before contributing.
+Contributions are welcome! Please follow these guidelines:
 
-1. Fork the repository
+1. Fork repository
 2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
 3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
 4. Push to the branch (`git push origin feature/AmazingFeature`)
